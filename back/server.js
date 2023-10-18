@@ -10,8 +10,7 @@ if(process.env.ENVIRONMENT !== 'production') {
 }
 
 
-//const taskController = require('./controller/task.controller')
-
+const taskController = require('./controller/task.controller')
 
 
 const app = express();
@@ -24,6 +23,22 @@ app.get('/', (req, res) => {
     res.send("Hello !!");
 });
 
+app.get('/api/tasks', (req, res) => {
+    taskController.getTasks().then(data => res.json(data));
+});
+
+app.post('/api/task', (req, res) => {
+    console.log(req.body);
+    taskController.createTask(req.body.task).then(data => res.json(data));
+});
+
+app.put('/api/task', (req, res) => {
+    taskController.updateTask(req.body.task).then(data => res.json(data));
+});
+
+app.delete('/api/task/:id', (req, res) => {
+    taskController.deleteTask(req.params.id).then(data => res.json(data));
+});
 
 
 app.listen(port, () => {
